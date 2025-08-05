@@ -2,13 +2,92 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>MICHELLE</title>
+  <title>Para Michelle</title>
   <style>
     body {
       background: linear-gradient(to bottom, #000, #330000);
+      margin: 0;
       height: 100vh;
-      overflow-x: hidden;
+      overflow: hidden;
       font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: white;
+    }
+
+    .boton-circular {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 1em;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+      z-index: 10;
+      animation: latido 1s infinite;
+    }
+
+    @keyframes latido {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .texto-encima-boton {
+      color: white;
+      font-size: 1.2em;
+      margin-bottom: 10px;
+      z-index: 11;
+    }
+
+    #contenedor {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      animation: aparecer 2s ease forwards;
+      background-color: #ffe6f0; /* rosa pastel */
+      border: 3px solid white;
+      border-radius: 20px;
+      padding: 20px;
+      color: black;
+      position: absolute;
+      z-index: 999;
+    }
+
+    @keyframes aparecer {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    #titulo {
+      font-size: 2em;
+      margin-bottom: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #c2185b;
+    }
+
+    #imagen {
+      width: 350px;
+      max-width: 90%;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    #frase {
+      margin-top: 15px;
+      font-size: 1.3em;
+      text-align: center;
+    }
+
+    #nombre {
+      margin-top: 10px;
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #c2185b;
     }
 
     .palabra-lluvia {
@@ -17,9 +96,10 @@
       left: 50%;
       transform: translateX(-50%);
       color: red;
-      font-size: 2.5em;
+      font-size: 2em;
       font-weight: bold;
       animation: caer 4s linear infinite;
+      pointer-events: none;
     }
 
     @keyframes caer {
@@ -53,119 +133,44 @@
       0% { transform: translateY(0) rotate(45deg); opacity: 1; }
       100% { transform: translateY(-100vh) rotate(45deg); opacity: 0; }
     }
-
-    .carta {
-      position: fixed;
-      bottom: -100%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 320px;
-      height: 360px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #900;
-      font-weight: bold;
-      text-align: center;
-      padding: 20px;
-      transition: bottom 2s ease;
-      z-index: 10;
-    }
-
-    .carta.abierta { bottom: 30%; }
-
-    .boton-abrir {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 15px 30px;
-      background: red;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 1em;
-      cursor: pointer;
-      z-index: 11;
-    }
-
-    .flecha {
-      position: fixed;
-      bottom: 70px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 2em;
-      color: white;
-      animation: parpadeo 1s infinite;
-      z-index: 11;
-    }
-
-    @keyframes parpadeo {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    .letra {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 1s ease;
-    }
-
-    .letra.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
   </style>
 </head>
-
 <body>
-  <!-- Audio con enlace directo -->
+
+  <!-- Música -->
   <audio id="musica" src="cancion.mp3" autoplay muted loop></audio>
 
-  <div class="flecha">⬇️ Dale click</div>
-  <button class="boton-abrir" onclick="abrirCarta()">Abrir carta 💌</button>
+  <!-- Texto encima del botón -->
+  <div class="texto-encima-boton">Haz clic aquí</div>
 
-  <div id="carta" class="carta">
-    Michelle eres muy lindaaaaaaa :3
+  <!-- Botón -->
+  <button class="boton-circular" id="boton" onclick="mostrarContenido()">💖</button>
+
+  <!-- Contenido que aparece después -->
+  <div id="contenedor">
+    <div id="titulo">Para ti 💐</div>
+    <img id="imagen" src="imagen1.jpg" alt="Un ramo de flores para ti">
+    <div id="frase">Una flor hermosa para una chica hermosa.</div>
+    <div id="nombre">Michelle</div>
   </div>
 
+  <!-- Palabras y corazones -->
   <div id="contenedor-palabras"></div>
   <div id="contenedor-corazones"></div>
 
-  <section style="max-width: 600px; margin: auto; color: white; padding: 50px;">
-    <h2 style="text-align: center;">💌 Carta para ti</h2>
-   
-  </section>
-
   <script>
-    // Reproducir música al clic
-    window.addEventListener("click", () => {
+    function mostrarContenido() {
+      document.getElementById("boton").style.display = "none";
+      document.querySelector(".texto-encima-boton").style.display = "none";
+      document.getElementById("contenedor").style.display = "flex";
+
       const audio = document.getElementById("musica");
       audio.muted = false;
       audio.play();
-    }, { once: true });
-
-    // Carta animada
-    function abrirCarta() {
-      document.getElementById("carta").classList.add("abierta");
     }
 
-    // Letras visibles al hacer scroll
-    const letras = document.querySelectorAll(".letra");
-    window.addEventListener("scroll", () => {
-      letras.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        if (top < window.innerHeight - 50) {
-          el.classList.add("visible");
-        }
-      });
-    });
-
     // Lluvia de palabras
-    const palabras = ["heermosa", "bella", "divinaa", "linda", "MICHI", "Michelle"];
+    const palabras = ["hermosa", "bella", "divina", "linda", "Michelle"];
     setInterval(() => {
       const palabra = document.createElement('div');
       palabra.classList.add('palabra-lluvia');
@@ -188,6 +193,3 @@
   </script>
 </body>
 </html>
-
-
-
